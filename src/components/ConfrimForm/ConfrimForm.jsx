@@ -10,9 +10,6 @@ import { Auth } from 'aws-amplify';
 // react-hook-form
 import { useForm } from 'react-hook-form';
 
-// react-router-dom
-import { useHistory } from 'react-router-dom';
-
 // notistack
 import { useSnackbar } from 'notistack';
 
@@ -30,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignupForm = ({ onCompleted, onError }) => {
+const ConfrimForm = ({ email, onCompleted, onError }) => {
   const classes = useStyles();
 
   // states
@@ -40,24 +37,19 @@ const SignupForm = ({ onCompleted, onError }) => {
 
   const { register, handleSubmit, errors } = useForm();
 
-  const history = useHistory();
-
-  const onSubmit = ({ email, password }) => {
+  const onSubmit = ({ code }) => {
     setIsLoading(true);
 
-    Auth.configure();
-
-    Auth.signUp(email, password)
+    Auth.confirmSignUp(email, code)
       .then((user) => {
-        onCompleted && onCompleted(user, { email, password });
-        enqueueSnackbar('User successfully created');
+        onCompleted && onCompleted(user, { email, code });
 
-        history.replace('/');
+        enqueueSnackbar('Welcome!');
 
         setIsLoading(false);
       })
       .catch((error) => {
-        onError && onError(error, { email, password });
+        onError && onError(error, { email, code });
 
         enqueueSnackbar(error.message, { variant: 'error' });
 
@@ -68,38 +60,27 @@ const SignupForm = ({ onCompleted, onError }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box display="flex" flexDirection="column">
         <Box marginBottom={5} width="100%">
-          <TextField
-            fullWidth
-            variant="outlined"
-            label="email"
-            name="email"
-            inputRef={register({
-              required: { value: true, message: 'this field is required' },
-              pattern: { value: EMAIL_REGEX, message: 'not a valid email address' },
-            })}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-          />
+          <TextField fullWidth variant="outlined" label="email" name="email" value={email} disabled inputRef={register} />
         </Box>
-
         <Box marginBottom={5} width="100%">
           <TextField
             fullWidth
-            type="password"
             variant="outlined"
-            label="password"
-            name="password"
-            inputRef={register({ required: { value: true, message: 'this field is required' } })}
-            error={!!errors.password}
-            helperText={errors.password?.message}
+            label="Activation Code"
+            name="code"
+            inputRef={register({
+              required: { value: true, message: 'this field is required' },
+            })}
+            error={!!errors.code}
+            helperText={errors.email?.code}
           />
         </Box>
         <ProgressButton isLoading={isLoading} fullWidth type="submit" variant="contained">
-          Signup
+          Confirm
         </ProgressButton>
       </Box>
     </form>
   );
 };
 
-export default memo(SignupForm);
+export default memo(ConfrimForm);

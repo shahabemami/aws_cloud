@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "awscloudddd210eb_identitypool_ddd210eb",
+    "identityPoolName": "awscloud7a28982f_identitypool_7a28982f",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "awscloddd210eb",
-    "userPoolName": "awscloudddd210eb_userpool_ddd210eb",
+    "resourceNameTruncated": "awsclo7a28982f",
+    "userPoolName": "awscloud7a28982f_userpool_7a28982f",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "awscloddd210eb_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "awsclo7a28982f_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "ddd210eb",
-    "resourceName": "awscloudddd210eb",
+    "sharedId": "7a28982f",
+    "resourceName": "awscloud7a28982f",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
