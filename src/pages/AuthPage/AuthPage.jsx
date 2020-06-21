@@ -47,7 +47,9 @@ const AuthPage = () => {
 
   // login form
   const onLoginCompleted = () => {
-    history.replace('/');
+    setTimeout(() => {
+      history.push('/');
+    }, 500);
   };
 
   const onLoginError = (error, { email }) => {

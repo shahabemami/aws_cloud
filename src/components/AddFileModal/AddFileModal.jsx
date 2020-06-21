@@ -60,19 +60,6 @@ const AddFileModal = ({ open, onClose, fetchAllFiles }) => {
         setIsLoading(false);
         onClose();
       }
-
-      // Storage.put(files[0].name, files[0], { level: 'protected' })
-      //   .then((file) => {
-      //     enqueueSnackbar('successfully uploaded', { variant: 'success' });
-      //     fetchAllFiles('', 'protected');
-      //     setIsLoading(false);
-      //     onClose();
-      //   })
-      //   .catch((error) => {
-      //     enqueueSnackbar(error.message, { variant: 'error' });
-      //     setIsLoading(false);
-      //     onClose();
-      //   });
     } else {
       enqueueSnackbar('you need to select at least one file', { variant: 'warning' });
     }
