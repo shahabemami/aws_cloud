@@ -21,17 +21,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProgressButton = forwardRef(({ fullWidth, isLoading, disabled, children, ...rest }, ref) => {
+const ProgressButton = ({ fullWidth, isLoading, disabled, children, ...rest }) => {
   const classes = useStyles({ fullWidth });
 
   return (
     <div className={classes.root}>
       {isLoading && <LinearProgress className={classes.progress} />}
-      <Button fullWidth ref={ref} disabled={disabled || isLoading} {...rest}>
+      <Button fullWidth disabled={disabled || isLoading} {...rest}>
         {children}
       </Button>
     </div>
   );
-});
+};
 
 export default ProgressButton;

@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
+// actions
+import { getUser } from '../../actions/authActions';
+
+// redux
+import { Provider } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
 // react-router-dom
 import { Redirect } from 'react-router-dom';
 
@@ -35,21 +43,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AuthPage = () => {
+const AuthPage = ({user, getUser}) => {
   const classes = useStyles();
 
   const history = useHistory();
-
-  const user = useUser();
 
   const [currentState, setCurrentState] = useState('login');
   const [email, setEmail] = useState('');
 
   // login form
   const onLoginCompleted = () => {
-    setTimeout(() => {
-      history.push('/');
-    }, 500);
+    getUser();
+    history.push('/');
   };
 
   const onLoginError = (error, { email }) => {
@@ -155,4 +160,17 @@ const AuthPage = () => {
   );
 };
 
-export default AuthPage;
+const mapStateToProps = ({ user }) => ({
+  user,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      getUser,
+    },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthPage);

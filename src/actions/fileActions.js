@@ -14,7 +14,6 @@ const setFiles = (files) => ({
   files,
 });
 
-// get list of all admins
 const fetchAllFiles = (path, level) => {
   return (dispatch) => {
     dispatch(setFilesLoading(true));
