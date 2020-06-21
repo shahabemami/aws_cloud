@@ -1,11 +1,12 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-// aws-amplify
-import { Auth } from 'aws-amplify';
+// actions
+import { fetchAllFiles } from '../../actions/fileActions';
 
-// react-router-dom
-import { useHistory } from 'react-router-dom';
+// redux
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 // hooks
 import useFiles from '../../hooks/useFiles';
@@ -17,6 +18,7 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import SignOutButton from '../../components/SignOutButton';
 import AddFileModal from '../../components/AddFileModal';
 import FileItem from '../../components/File';
@@ -31,19 +33,34 @@ const useStyles = makeStyles((theme) => ({
     bottom: theme.spacing(2),
     right: theme.spacing(2),
   },
+  progress: {
+    width: "100%",
+    height: '3px',
+  }
 }));
 
-const StoragePage = () => {
+const StoragePage = ({ files, fetchAllFiles }) => {
   const classes = useStyles();
-
-  const { files, isLoading } = useFiles('', { level: 'protected' });
 
   const [openFileModal, setOpenFileModal] = useState(false);
 
   const renderFiles = () => {
-    return files.map((file, index) => <FileItem key={index} name={file.key} level="protected" />);
+    return files.result.map((file, index) => <FileItem key={index} name={file.key} level="protected" />);
   };
 
+  useEffect(() => {
+    let mounted = true;
+
+    const calls = () => {
+      fetchAllFiles('', 'protected');
+    };
+
+    if (mounted) calls();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
   return (
     <Box width="100%" height="100%" position="relative">
       <AppBar color="transparent" variant="outlined" position="relative">
@@ -51,6 +68,7 @@ const StoragePage = () => {
           <SignOutButton />
         </Toolbar>
       </AppBar>
+      {files.loading && <LinearProgress className={classes.progress}/>}
 
       <Box marginY={4}>
         <Container>{renderFiles()}</Container>
@@ -65,4 +83,17 @@ const StoragePage = () => {
   );
 };
 
-export default StoragePage;
+const mapStateToProps = ({ files }) => ({
+  files,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      fetchAllFiles,
+    },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StoragePage);

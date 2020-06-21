@@ -1,6 +1,12 @@
 import React, { useEffect } from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 
+// redux
+import { Provider } from 'react-redux';
+
+// helpers
+import store from './helpers/store';
+
 // react-router-dom
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
@@ -32,18 +38,20 @@ const App = () => {
   const user = useUser();
   return (
     <Box width="100%" height="100%">
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <SnackbarProvider>
-            <CssBaseline />
+      <Provider store={store}>
+        <BrowserRouter>
+          <ThemeProvider theme={theme}>
+            <SnackbarProvider>
+              <CssBaseline />
 
-            <Switch>
-              <PrivateRoute exact path="/" component={StoragePage} isAuthenticated={!!user} />
-              <Route exact path="/auth" component={AuthPage} />
-            </Switch>
-          </SnackbarProvider>
-        </ThemeProvider>
-      </BrowserRouter>
+              <Switch>
+                <PrivateRoute exact path="/" component={StoragePage} isAuthenticated={!!user} />
+                <Route exact path="/auth" component={AuthPage} />
+              </Switch>
+            </SnackbarProvider>
+          </ThemeProvider>
+        </BrowserRouter>
+      </Provider>
     </Box>
   );
 };

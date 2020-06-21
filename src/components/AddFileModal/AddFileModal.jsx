@@ -4,8 +4,12 @@ import { makeStyles } from '@material-ui/core/styles';
 // aws-amplify
 import { Storage } from 'aws-amplify';
 
-// react-hook-form
-import { useForm } from 'react-hook-form';
+// actions
+import { fetchAllFiles } from '../../actions/fileActions';
+
+// redux
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 // notistack
 import { useSnackbar } from 'notistack';
@@ -28,7 +32,7 @@ import ProgressButton from '../ProgressButton';
 // styles
 const useStyles = makeStyles((theme) => ({}));
 
-const AddFileModal = ({ open, onClose }) => {
+const AddFileModal = ({ open, onClose, fetchAllFiles }) => {
   const classes = useStyles();
 
   const [files, setFiles] = useState([]);
@@ -40,13 +44,20 @@ const AddFileModal = ({ open, onClose }) => {
 
   const onUpload = () => {
     if (files.length > 0) {
+      setIsLoading(true);
       // upload files
-      Storage.put(files[0].name, files[0])
+      Storage.put(files[0].name, files[0], { level: 'protected' })
         .then((file) => {
-          console.log(file);
           enqueueSnackbar('successfully uploaded', { variant: 'success' });
+          fetchAllFiles('', 'protected');
+          setIsLoading(false);
+          onClose();
         })
-        .catch((error) => enqueueSnackbar(error.message, { variant: 'error' }));
+        .catch((error) => {
+          enqueueSnackbar(error.message, { variant: 'error' });
+          setIsLoading(false);
+          onClose();
+        });
     } else {
       enqueueSnackbar('you need to select at least one file', { variant: 'warning' });
     }
@@ -71,4 +82,13 @@ const AddFileModal = ({ open, onClose }) => {
   );
 };
 
-export default memo(AddFileModal);
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      fetchAllFiles,
+    },
+    dispatch
+  );
+};
+
+export default connect(null, mapDispatchToProps)(AddFileModal);
