@@ -8,8 +8,6 @@ import { fetchAllFiles } from '../../actions/fileActions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-// hooks
-import useFiles from '../../hooks/useFiles';
 
 // components
 import AppBar from '@material-ui/core/AppBar';
