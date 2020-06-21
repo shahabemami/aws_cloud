@@ -14,17 +14,13 @@ import { useForm } from 'react-hook-form';
 import { useSnackbar } from 'notistack';
 
 // components
-import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
 import ProgressButton from '../ProgressButton';
 
 // styles
 const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(4),
-    minWidth: 400,
-  },
+  root: {},
 }));
 
 const LoginForm = ({ onCompleted, onError }) => {

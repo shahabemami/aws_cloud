@@ -21,10 +21,7 @@ import ProgressButton from '../ProgressButton';
 
 // styles
 const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(4),
-    minWidth: 400,
-  },
+  root: {},
 }));
 
 const ConfrimForm = ({ email, onCompleted, onError }) => {

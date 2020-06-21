@@ -6,9 +6,19 @@ const useUser = () => {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    Auth.currentAuthenticatedUser()
-      .then((user) => setUser(user))
-      .catch(() => {});
+    let mounted = true;
+    
+    const calls = () => {
+      Auth.currentAuthenticatedUser()
+        .then((user) => setUser(user))
+        .catch(() => {});
+    };
+
+    if (mounted) calls();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return user;
