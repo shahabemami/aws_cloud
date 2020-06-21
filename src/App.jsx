@@ -14,7 +14,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 const App = () => {
   return (
     <BrowserRouter>
-      <Box>
+      <Box width="100%" height="100%">
         <CssBaseline />
 
         <Switch>
